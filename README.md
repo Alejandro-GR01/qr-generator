@@ -49,7 +49,8 @@ npm run build
 
 ## Autor
 
-Alejandro Guzmán Rodríguez
+Alejandro Guzmán Rodríguez  
+GitHub: https://github.com/alejandro-gr01
 
 ## Licencia
 

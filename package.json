@@ -2,7 +2,7 @@
   "name": "qr-generator",
   "private": true,
   "version": "1.0.0",
-  "author": "Alejandro Guzmán Rodríguez <alejandroguzmanr011231@gmail.com>",
+  "author": "Alejandro Guzmán Rodríguez <alejandroguzmanr011231@gmail.com> (https://github.com/alejandro-gr01)",
   "type": "module",
   "scripts": {
     "dev": "vite",
