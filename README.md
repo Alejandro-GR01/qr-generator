@@ -1,73 +1,56 @@
-# React + TypeScript + Vite
+# Generador de QR
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Herramienta para generar códigos QR desarrollada con React, TypeScript y Tailwind CSS.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Tipos de QR disponibles:**
+  - 📶 **WiFi** — Conectar directo a redes inalámbricas
+  - 🔗 **URL** — Redirigir a enlaces web
+  - 📝 **Texto** — Cualquier información en texto
 
-## React Compiler
+- **Funcionalidades:**
+  - 🌙 Modo oscuro/claro (se guarda en el navegador)
+  - 🖼️ Subir logo de empresa centrado en el QR
+  - ⬜ Esquinas redondeadas del QR
+  - 💾 Descarga en varias resoluciones (300px - 2400px)
+  - 📋 Copiar al portapapeles
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Stack técnico:**
+  - React 19
+  - TypeScript
+  - Vite
+  - Tailwind CSS v4
+  - shadcn/ui
+  - react-hook-form
+  - qrcode
 
-## Expanding the ESLint configuration
+## Cómo usarlo
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# Instalar dependencias
+npm install
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Ejecutar en desarrollo
+npm run dev
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Build para producción
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Opciones de descarga
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Opción | Tamaño | Para |
+|--------|--------|------|
+| Pequeño | 300px | Redes sociales |
+| Mediano | 600px | Pantallas |
+| Grande | 1200px | Impresión mediana |
+| Impresión | 2400px | Folletos, carteles |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Autor
+
+Alejandro Guzmán Rodríguez
+
+## Licencia
+
+MIT
