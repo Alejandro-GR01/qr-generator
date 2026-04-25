@@ -8,7 +8,7 @@ Una herramienta versátil para generar códigos QR desarrollada con React, TypeS
 
 **Accedé al proyecto:** https://alejandro-gr01.github.io/qr-generator/
 
-![QR Generator](./src/assets/screenshot.png)
+![QR Generator](./public/landing.png)
 
 ## Características
 
