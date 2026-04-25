@@ -1,6 +1,8 @@
 # QR Generator
 
-Herramienta para generar códigos QR desarrollada con React, TypeScript y Tailwind CSS.
+> ⚡ Generado con asistencia de IA — aproximadamente una semana de desarrollo y revisión de código ahorrada.
+
+Una herramienta versátil para generar códigos QR desarrollada con React, TypeScript y Tailwind CSS.
 
 ## Características
 
