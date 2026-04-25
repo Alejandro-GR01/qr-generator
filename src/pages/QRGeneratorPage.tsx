@@ -439,7 +439,7 @@ export default function QRGeneratorPage() {
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
-      <div className="mx-auto max-w-md space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6">
         {/* Header with Dark Mode Toggle */}
         <div className="flex items-center justify-between">
           <div className="text-left">
@@ -457,140 +457,148 @@ export default function QRGeneratorPage() {
           </button>
         </div>
 
-        {/* Type Selector */}
-        <div className="flex gap-1 rounded-md bg-muted p-1">
-          {TYPE_OPTIONS.map((opt) => (
-            <button
-              key={opt.value}
-              type="button"
-              onClick={() => handleTypeChange(opt.value)}
-              className={`flex-1 rounded-sm px-3 py-2 text-sm font-medium transition-colors ${
-                selectedType === opt.value
-                  ? 'bg-background shadow'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
+        {/* Two column layout: form left, QR right on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Form Column */}
+          <div className="space-y-6">
+            {/* Type Selector */}
+            <div className="flex gap-1 rounded-md bg-muted p-1">
+              {TYPE_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => handleTypeChange(opt.value)}
+                  className={`flex-1 rounded-sm px-3 py-2 text-sm font-medium transition-colors ${
+                    selectedType === opt.value
+                      ? 'bg-background shadow'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>
-              {selectedType === 'wifi' && 'WiFi QR Code'}
-              {selectedType === 'url' && 'URL QR Code'}
-              {selectedType === 'text' && 'Text QR Code'}
-            </CardTitle>
-            <CardDescription>
-              {selectedType === 'wifi' && 'Scan to connect to WiFi'}
-              {selectedType === 'url' && 'Scan to open a link'}
-              {selectedType === 'text' && 'Scan to read text'}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(generateQR)} className="space-y-4">
-              {renderFormFields()}
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  {selectedType === 'wifi' && 'WiFi QR Code'}
+                  {selectedType === 'url' && 'URL QR Code'}
+                  {selectedType === 'text' && 'Text QR Code'}
+                </CardTitle>
+                <CardDescription>
+                  {selectedType === 'wifi' && 'Scan to connect to WiFi'}
+                  {selectedType === 'url' && 'Scan to open a link'}
+                  {selectedType === 'text' && 'Scan to read text'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit(generateQR)} className="space-y-4">
+                  {renderFormFields()}
 
-              {/* Logo Upload */}
-              <div className="space-y-2">
-                <Label htmlFor="logo">Logo (optional)</Label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    id="logo"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleLogoChange}
-                    className="flex-1"
-                  />
-                  {logoDataUrl && (
-                    <button
-                      type="button"
-                      onClick={removeLogo}
-                      className="p-2 rounded-md hover:bg-muted transition-colors"
-                      aria-label="Remove logo"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  )}
-                </div>
-                {logoDataUrl && (
-                  <div className="mt-2 flex items-center gap-2">
-                    <img
-                      src={logoDataUrl}
-                      alt="Logo preview"
-                      className="h-10 w-10 object-contain border rounded"
-                    />
-                    <span className="text-sm text-muted-foreground">Logo will be centered on QR</span>
+                  {/* Logo Upload */}
+                  <div className="space-y-2">
+                    <Label htmlFor="logo">Logo (optional)</Label>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        id="logo"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLogoChange}
+                        className="flex-1"
+                      />
+                      {logoDataUrl && (
+                        <button
+                          type="button"
+                          onClick={removeLogo}
+                          className="p-2 rounded-md hover:bg-muted transition-colors"
+                          aria-label="Remove logo"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
+                    {logoDataUrl && (
+                      <div className="mt-2 flex items-center gap-2">
+                        <img
+                          src={logoDataUrl}
+                          alt="Logo preview"
+                          className="h-10 w-10 object-contain border rounded"
+                        />
+                        <span className="text-sm text-muted-foreground">Logo will be centered on QR</span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
 
-              {error && (
-                <p className="text-sm text-destructive">{error}</p>
-              )}
+                  {error && (
+                    <p className="text-sm text-destructive">{error}</p>
+                  )}
 
-              <Button type="submit" className="w-full">
-                Generate QR Code
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+                  <Button type="submit" className="w-full">
+                    Generate QR Code
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
 
-        {/* QR Display */}
-        {qrDataUrl && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Your QR Code</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-center rounded-lg border p-4">
-                <img
-                  src={qrDataUrl}
-                  alt="Generated QR Code"
-                  className="h-80 w-80"
-                />
-              </div>
+          {/* QR Display Column */}
+          <div className="space-y-6">
+            {qrDataUrl && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Your QR Code</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-center rounded-lg border p-4">
+                    <img
+                      src={qrDataUrl}
+                      alt="Generated QR Code"
+                      className="h-80 w-80"
+                    />
+                  </div>
 
-              {/* Resolution selector for download */}
-              <div className="space-y-2">
-                <Label htmlFor="resolution">Download Resolution</Label>
-                <select
-                  id="resolution"
-                  value={downloadResolution}
-                  onChange={(e) => setDownloadResolution(Number(e.target.value))}
-                  className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                >
-                  {RESOLUTION_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                  {/* Resolution selector for download */}
+                  <div className="space-y-2">
+                    <Label htmlFor="resolution">Download Resolution</Label>
+                    <select
+                      id="resolution"
+                      value={downloadResolution}
+                      onChange={(e) => setDownloadResolution(Number(e.target.value))}
+                      className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    >
+                      {RESOLUTION_OPTIONS.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleCopyToClipboard}
-                  className="flex-1"
-                >
-                  {copySuccess ? 'Copied!' : 'Copy'}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleDownload}
-                  className="flex-1"
-                  disabled={isDownloading}
-                >
-                  {isDownloading ? 'Generating...' : 'Download'}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+                  <div className="flex gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleCopyToClipboard}
+                      className="flex-1"
+                    >
+                      {copySuccess ? 'Copied!' : 'Copy'}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleDownload}
+                      className="flex-1"
+                      disabled={isDownloading}
+                    >
+                      {isDownloading ? 'Generating...' : 'Download'}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )
