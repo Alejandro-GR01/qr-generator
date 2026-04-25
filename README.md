@@ -4,6 +4,12 @@
 
 Una herramienta versátil para generar códigos QR desarrollada con React, TypeScript y Tailwind CSS.
 
+## 🌐 Demo en vivo
+
+**Accedé al proyecto:** https://alejandro-gr01.github.io/qr-generator/
+
+![QR Generator](./src/assets/screenshot.png)
+
 ## Características
 
 - **Tipos de QR disponibles:**
