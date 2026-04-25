@@ -1,4 +1,4 @@
-# Generador de QR
+# QR Generator
 
 Herramienta para generar códigos QR desarrollada con React, TypeScript y Tailwind CSS.
 
@@ -15,6 +15,7 @@ Herramienta para generar códigos QR desarrollada con React, TypeScript y Tailwi
   - ⬜ Esquinas redondeadas del QR
   - 💾 Descarga en varias resoluciones (300px - 2400px)
   - 📋 Copiar al portapapeles
+  - 💻 Layout responsivo (2 columnas en desktop)
 
 - **Stack técnico:**
   - React 19
@@ -24,6 +25,23 @@ Herramienta para generar códigos QR desarrollada con React, TypeScript y Tailwi
   - shadcn/ui
   - react-hook-form
   - qrcode
+  - Componentes reutilizables
+
+## Estructura de componentes
+
+```
+src/
+├── components/
+│   ├── Header.tsx         # Encabezado con toggle dark mode
+│   ├── TypeSelector.tsx   # Selector de tipo de QR
+│   ├── QRForm.tsx         # Formulario de entrada
+│   ├── QRDisplay.tsx      # Visualización del QR
+│   └── ui/               # Componentes shadcn/ui
+├── pages/
+│   └── QRGeneratorPage.tsx # Página principal
+└── types/
+    └── index.ts          # Tipos TypeScript
+```
 
 ## Cómo usarlo
 
