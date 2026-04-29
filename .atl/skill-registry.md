@@ -29,4 +29,18 @@ Located: `~/.config/opencode/skills/`
 
 ## Project-Level Skills
 
-None detected.
+Located: `generador-de-qr/.agents/skills/`
+
+| Skill | Trigger | Location |
+|-------|---------|----------|
+| vercel-react-best-practices | "React performance", "optimize re-renders" | `.agents/skills/react-best-practices/SKILL.md` |
+| vercel-composition-patterns | "refactor components", "compound components" | `.agents/skills/composition-patterns/SKILL.md` |
+| tailwind-css-patterns | "styled with Tailwind", "responsive design" | `.agents/skills/tailwind-css-patterns/SKILL.md` |
+| vite | "Vite config", "build setup" | `.agents/skills/vite/SKILL.md` |
+| frontend-design | "build UI", "design frontend" | `.agents/skills/frontend-design/SKILL.md` |
+| nodejs-backend-patterns | "Node.js backend", "REST API" | `.agents/skills/nodejs-backend-patterns/SKILL.md` |
+| accessibility | "a11y", "accessible", "WCAG" | `.agents/skills/accessibility/SKILL.md` |
+| seo | "SEO", "search engine optimization" | `.agents/skills/seo/SKILL.md` |
+| typescript-advanced-types | "TypeScript types", "generics" | `.agents/skills/typescript-advanced-types/SKILL.md` |
+| react-hook-form | "form validation", "react-hook-form" | `.agents/skills/react-hook-form/SKILL.md` |
+| nodejs-best-practices | "Node.js best practices" | `.agents/skills/nodejs-best-practices/SKILL.md` |

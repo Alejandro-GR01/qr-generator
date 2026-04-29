@@ -59,10 +59,7 @@ export default function QRGeneratorPage() {
   const toggleDarkMode = () => setIsDarkMode(!isDarkMode)
 
   const {
-    register,
-    formState: { errors },
     reset,
-    watch,
   } = useForm<FormData>({
     defaultValues: {
       ssid: '',
@@ -73,11 +70,6 @@ export default function QRGeneratorPage() {
       text: '',
     },
   })
-
-  // Watch fields for changes
-  watch('ssid')
-  watch('url')
-  watch('text')
 
   const handleTypeChange = (type: QRType) => {
     setSelectedType(type)
@@ -304,9 +296,6 @@ export default function QRGeneratorPage() {
               logoDataUrl={logoDataUrl}
               onLogoChange={handleLogoChange}
               onGenerate={generateQR}
-              errors={errors}
-              register={register as (name: string, options?: Record<string, unknown>) => Record<string, unknown>}
-              watch={watch as (name: string) => unknown}
             />
           </div>
 

@@ -16,28 +16,35 @@ const ENCRYPTION_OPTIONS = [
   { value: 'WPA', label: 'WPA/WPA2' },
   { value: 'WEP', label: 'WEP' },
   { value: 'nopass', label: 'None' },
-]
+] as const
 
 interface QRFormProps {
   selectedType: QRType
   logoDataUrl: string | null
   onLogoChange: (dataUrl: string | null) => void
   onGenerate: (data: WifiData | UrlData | TextData) => void
-  errors?: Record<string, unknown>
-  register: (name: string, options?: Record<string, unknown>) => Record<string, unknown>
-  watch: (name: string) => unknown
 }
 
+// Controlled form - simple state management without react-hook-form
 export function QRForm({
   selectedType,
   logoDataUrl,
   onLogoChange,
   onGenerate,
-  errors,
-  register,
-  watch,
 }: QRFormProps) {
   const [showPassword, setShowPassword] = useState(false)
+  
+  // Form state
+  const [ssid, setSsid] = useState('')
+  const [password, setPassword] = useState('')
+  const [encryption, setEncryption] = useState<'WPA' | 'WEP' | 'nopass'>('WPA')
+  const [hidden, setHidden] = useState(false)
+  const [url, setUrl] = useState('')
+  const [text, setText] = useState('')
+  
+  // Error state
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -55,21 +62,34 @@ export function QRForm({
     if (fileInput) fileInput.value = ''
   }
 
+  const validate = (): boolean => {
+    const newErrors: Record<string, string> = {}
+    
+    if (selectedType === 'wifi' && !ssid.trim()) {
+      newErrors.ssid = 'SSID is required'
+    }
+    if (selectedType === 'url' && !url.trim()) {
+      newErrors.url = 'URL is required'
+    }
+    if (selectedType === 'text' && !text.trim()) {
+      newErrors.text = 'Text is required'
+    }
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
+    if (!validate()) return
+    
     if (selectedType === 'wifi') {
-      const ssid = watch('ssid') as string
-      const password = (watch('password') as string) || ''
-      const encryption = (watch('encryption') as string) || 'WPA'
-      const hidden = (watch('hidden') as boolean) || false
-      onGenerate({ ssid, password, encryption, hidden } as WifiData)
+      onGenerate({ ssid, password, encryption, hidden })
     } else if (selectedType === 'url') {
-      const url = watch('url') as string
-      onGenerate({ url } as UrlData)
+      onGenerate({ url })
     } else {
-      const text = watch('text') as string
-      onGenerate({ text } as TextData)
+      onGenerate({ text })
     }
   }
 
@@ -83,23 +103,34 @@ export function QRForm({
               <Input
                 id="ssid"
                 placeholder="Network name"
-                {...register('ssid', { required: selectedType === 'wifi' })}
+                autoComplete="organization-title"
+                value={ssid}
+                onChange={(e) => {
+                  setSsid(e.target.value)
+                  if (errors.ssid) setErrors(prev => ({ ...prev, ssid: '' }))
+                }}
+                aria-invalid={!!errors.ssid}
+                aria-describedby={errors.ssid ? 'ssid-error' : undefined}
               />
-              {(errors as any)?.ssid && (
-                <p className="text-sm text-destructive">SSID is required</p>
+              {errors.ssid && (
+                <p id="ssid-error" className="text-sm text-destructive" role="alert">
+                  {errors.ssid}
+                </p>
               )}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="WiFi password"
-                  className="pr-10"
-                  {...register('password')}
-                />
+<Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="WiFi password"
+                className="pr-10"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -120,8 +151,8 @@ export function QRForm({
               <select
                 id="encryption"
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors"
-                {...register('encryption')}
-                defaultValue="WPA"
+                value={encryption}
+                onChange={(e) => setEncryption(e.target.value as 'WPA' | 'WEP' | 'nopass')}
               >
                 {ENCRYPTION_OPTIONS.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -136,7 +167,8 @@ export function QRForm({
                 type="checkbox"
                 id="hidden"
                 className="h-4 w-4"
-                {...register('hidden')}
+                checked={hidden}
+                onChange={(e) => setHidden(e.target.checked)}
               />
               <Label htmlFor="hidden" className="font-normal">
                 Hidden network
@@ -153,10 +185,18 @@ export function QRForm({
               id="url"
               type="url"
               placeholder="https://example.com"
-              {...register('url', { required: selectedType === 'url' })}
+              value={url}
+              onChange={(e) => {
+                setUrl(e.target.value)
+                if (errors.url) setErrors(prev => ({ ...prev, url: '' }))
+              }}
+              aria-invalid={!!errors.url}
+              aria-describedby={errors.url ? 'url-error' : undefined}
             />
-            {(errors as any)?.url && (
-              <p className="text-sm text-destructive">URL is required</p>
+            {errors.url && (
+              <p id="url-error" className="text-sm text-destructive" role="alert">
+                {errors.url}
+              </p>
             )}
           </div>
         )
@@ -169,10 +209,18 @@ export function QRForm({
               id="text"
               className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors"
               placeholder="Enter your text here..."
-              {...register('text', { required: selectedType === 'text' })}
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value)
+                if (errors.text) setErrors(prev => ({ ...prev, text: '' }))
+              }}
+              aria-invalid={!!errors.text}
+              aria-describedby={errors.text ? 'text-error' : undefined}
             />
-            {(errors as any)?.text && (
-              <p className="text-sm text-destructive">Text is required</p>
+            {errors.text && (
+              <p id="text-error" className="text-sm text-destructive" role="alert">
+                {errors.text}
+              </p>
             )}
           </div>
         )
@@ -197,7 +245,7 @@ export function QRForm({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6" aria-label="QR Code form">
           {renderFields()}
 
           {/* Logo Upload */}
